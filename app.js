@@ -1,20 +1,43 @@
-// initialize an express app and set it up
+// set express
 const express = require('express');
 const app = express();
 const io = require('socket.io')();
 
-// set some config
+// config port
 const port = process.env.PORT || 3000;
 
-// Tell our app to use the public folder for static files
+// tell app to use public folder
 app.use(express.static('public'));
 
-// This will be the route we will use
+// instansitate route
+
 app.get('/', (req, res, next) => {
-    res.sendFile(__dirname + "/views/index.html");
+    res.sendFile(__dirname + '/views/index.html');
 });
 
-// create server variable for socket.io to use
+// create server variable
+
 const server = app.listen(port, () => {
-    console.log(`app is running on port ${port}`);
+    console.log(`app is runing on port ${port}`);
+})
+
+//plug in  chat app package
+io.attach(server);
+
+io.on('connection', function(socket){
+    console.log('a user has connected');
+    socket.emit('connected', {sID: `${socket.id}`, message: 'new connection'} );
+
+    // listen for incoming message
+    socket.on('chat message', function(msg){
+        // check the message
+        console.log('message', msg, 'socket', socket.id);
+
+        // send a message to every connected client
+        io.emit('chat message', { id: `${socket.id}`, message: msg });
+    });
+    
+    socket.on('disconnect', function(){
+        console.log('a user has disconnected');
+    });
 });
