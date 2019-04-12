@@ -9,12 +9,18 @@
 <body>
 	<main id="app">		
 		<section class="form-container">
-			<label for="nickname">Your Nickname (optional)</label>
-			<input v-model="nickname" type="text" id="nickname" class="nickname" placeholder="What is your nickname?">
+			<div class="brand">
+				<h1>GenChat</h1>
+				<p>Introducing the next generation of Chat Applications. GenChat creates a place where you can talk with your friends, family or coworkers. </p>
+			</div>
+
+
+			<label for="nickname" required >Your Username</label>
+			<input v-model="nickname" type="text" id="nickname" class="nickname" placeholder="Enter your username...">
 			
 			<form>
 				<label for="message">Something to say?</label>
-				<textarea v-model="message" class="message" type="text" autocomplete="off" id="textarea"></textarea>
+				<textarea v-model="message" class="message" type="text" autocomplete="off" id="textarea" placeholder="Enter your message..."></textarea>
 				<input type="submit" @click.prevent="dispatchMessage">
 			</form>
 		</section>
